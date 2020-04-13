@@ -1,0 +1,31 @@
+name: Github Action for Generating pdf-file using Latex
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v1
+      - name: Compile main.tex
+        uses: xu-cheng/latex-action@master
+        with:
+          # The root LaTeX file to be compiled
+          root_file: main.tex
+          # The working directory for the LaTeX engine
+          working_directory: manuscript/
+          # The LaTeX engine to be invoked
+          compiler: pdflatex # optional, default is latexmk
+          # Extra arguments to be passed to the LaTeX engine
+          args: # optional, default is -pdf -file-line-error -interaction=nonstopmode
+          # Install extra packages by apk
+#          extra_system_packages: # optional
+
+      - name: Upload main.pdf
+        uses: actions/upload-artifact@v1
+        with:
+          name: main
+          path: manuscript/main.pdf
